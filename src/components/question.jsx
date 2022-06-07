@@ -44,7 +44,7 @@ class Question extends Component {
     return (
       <div style={{padding: 10}}>
         <Card style={{width: width, overflow: 'auto'}}>
-          <Card.Img variant='top' src='./test-images/q2.png'/> {/* ADD A IMG TO THE PROPS FOR THIS COMPONENT */}
+          <Card.Img variant='top' src='./test-images/q.png'/> {/* ADD A IMG TO THE PROPS FOR THIS COMPONENT */}
           <Card.Body>
             <h5>
               <Badge 
