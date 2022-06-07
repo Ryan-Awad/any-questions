@@ -27,3 +27,4 @@ public/test-images
 
 serviceAccount.json
 tests/
+auth/

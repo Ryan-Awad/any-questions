@@ -7,9 +7,10 @@ app.get('/ping', (req, res) => {
 });
 
 app.post('/upload-question', (req, res) => {
-  const {title, body} = req.body;
+  const {title, body, imageURL} = req.body;
+  
 
-  res.send('Question uploaded successfully.');
+  res.send('Question uploaded successfully.\n');
 });
 
 app.listen(8080, () => {
