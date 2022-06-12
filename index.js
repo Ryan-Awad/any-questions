@@ -1,16 +1,15 @@
 require('dotenv').config();
 const express = require('express');
-var {expressjwt: jwt} = require("express-jwt");
-const {writeData, readData} = require('./src/firebaseOperations');
+const {expressjwt} = require("express-jwt");
 const app = express();
-
+const JWTSECRET = process.env.JWT_SECRET;
 
 app.use(express.json());
 
-app.use(jwt({
-  secret: process.env.JWT_SECRET,
+app.use(expressjwt({
+  secret: JWTSECRET,
   algorithms: ['HS256']
-  }).unless({path: ['/ping']})
+  }).unless({path: ['/ping', '/login', '/register']})
 );
 
 app.use((err, req, res, next) => {
@@ -21,29 +20,12 @@ app.use((err, req, res, next) => {
   }
 });
 
-app.get('/ping', (req, res) => {
-  res.send('Pong!');
-});
-
-app.post('/upload-question', (req, res) => { // IF INVALID BODY IS SENT, THE BACKEND THROWS ERROR AND CRASHES (FIX) 
-  const {title, body, imageURL} = req.body;
-  const data = {
-    title: title,
-    body: body,
-    imgURL: imageURL,
-    answered: false
-  };
-
-  writeData('questions', data, () => {
-    res.send('Question successfully uploaded!\n');
-  });
-});
-
-app.post('/get-questions', (req, res) => {
-  readData('questions', data => {
-    res.send(data);
-  });
-});
+// ROUTES
+app.use('/', require('./src/routes/ping'));
+app.use('/', require('./src/routes/register'));
+app.use('/', require('./src/routes/login'));
+app.use('/', require('./src/routes/uploadQuestion'));
+app.use('/', require('./src/routes/getQuestions'));
 
 app.listen(8080, () => {
   console.log('Backend started.');

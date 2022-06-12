@@ -8,7 +8,7 @@ firebase.initializeApp({
 const db = firebase.firestore();
 
 module.exports.getID = (collection, callback) => {
-  const idLength = 20;
+  const idLength = 16;
   const id = Math.round(Math.random() * 10**idLength);
 
   this.readData(collection, data => {
@@ -25,7 +25,7 @@ module.exports.writeData = (collection, data, callback) => {
   this.getID(collection, dataID => {
     data['id'] = dataID;
     db.collection(collection).doc(dataID).create(data);
-    callback();
+    callback(dataID);
   });
 }
 
