@@ -14,9 +14,12 @@ function checkCredential(users, index, username, password, callback) {
       if (valid) {
         const token = jwt.sign({username: storedUser, id: storedID}, process.env.JWT_SECRET, {algorithm: 'HS256'});
         callback(token);
-      } 
-      else if (index === users.length-1) { // no more users in the db to check
-        callback(null);
+      } else {
+        if (index === users.length-1) { // no more users in the db to check
+          callback(null);
+        } else { // recurse to the next user
+          checkCredential(users, index+1, username, password, callback);
+        }
       }
     });
   }

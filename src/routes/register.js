@@ -5,7 +5,7 @@ const {writeData} = require('../firebase');
 const router = express.Router();
 
 router.post('/register', (req, res) => {
-  const {username, password} = req.body; // ENCRYPT THE PASSWORD
+  const {username, password} = req.body;
 
   const saltRounds = 10; // 2^10 iterations
   bcrypt.hash(password, saltRounds, (err, passwordHash) => {
