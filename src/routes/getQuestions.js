@@ -3,8 +3,16 @@ const {readData} = require('../firebase');
 const router = express.Router();
 
 router.get('/get-questions', (req, res) => {
+  const userID = req.auth.id;
   readData('questions', data => {
-    res.send(data);
+    const usersData = [];
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].userID === userID) {
+        usersData.push(data[i]);
+      }
+    }
+
+    res.status(200).send(usersData);
   });
 })
 

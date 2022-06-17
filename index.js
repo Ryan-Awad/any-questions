@@ -2,12 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const {expressjwt} = require("express-jwt");
 const app = express();
-const JWTSECRET = process.env.JWT_SECRET;
 
 app.use(express.json());
 
 app.use(expressjwt({
-  secret: JWTSECRET,
+  secret: process.env.JWT_SECRET,
   algorithms: ['HS256']
   }).unless({path: ['/ping', '/login', '/register']})
 );
