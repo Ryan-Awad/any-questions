@@ -1,9 +1,11 @@
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const {expressjwt} = require("express-jwt");
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 app.use(expressjwt({
   secret: process.env.JWT_SECRET,
@@ -26,6 +28,6 @@ app.use('/', require('./src/routes/login'));
 app.use('/', require('./src/routes/uploadQuestion'));
 app.use('/', require('./src/routes/getQuestions'));
 
-app.listen(8080, () => {
+app.listen(process.env.PORT, () => {
   console.log('Backend started.');
 });
