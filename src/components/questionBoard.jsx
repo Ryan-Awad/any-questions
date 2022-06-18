@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import Question from './question';
-import SubmitQuestion from './submitQuestion';
 
 class QuestionBoard extends Component {
   state = {
@@ -25,8 +24,6 @@ class QuestionBoard extends Component {
   render() { 
     return (
       <React.Fragment>
-        <SubmitQuestion />
-
         {this.state.questions.map(q => <Question key={q.id} data={q} handleAnswer={this.markAsAnswered}/>)}
       </React.Fragment>
     );
