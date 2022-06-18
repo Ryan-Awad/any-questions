@@ -16,7 +16,7 @@ router.post('/upload-question', (req, res) => {
   };
 
   writeData('questions', data, questionID => {
-    res.status(200).send(`Question successfully uploaded under the ID ${questionID}!\n`);
+    res.status(200).json({success: `Question successfully uploaded under the ID ${questionID}!`});
   });
 })
 

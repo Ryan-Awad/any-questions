@@ -12,7 +12,7 @@ router.get('/get-questions', (req, res) => {
       }
     }
 
-    res.status(200).send(usersData);
+    res.status(200).json({success: usersData});
   });
 })
 

@@ -36,9 +36,9 @@ router.post('/login', (req, res) => {
   readData('users', data => {
     checkCredential(data, 0, username, password, (token) => {
       if (token) {
-        res.status(200).send(token);
+        res.status(200).json({success: token});
       } else {
-        res.status(401).send('Invalid credentials.\n');
+        res.status(401).send({error: 'Invalid credentials.'});
       }
     });
   });

@@ -15,7 +15,7 @@ app.use(expressjwt({
 
 app.use((err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
-    res.status(401).send('Invalid token.\n');
+    res.status(401).json({error: 'Invalid token.'});
   } else {
     next(err);
   }
@@ -27,6 +27,7 @@ app.use('/', require('./src/routes/register'));
 app.use('/', require('./src/routes/login'));
 app.use('/', require('./src/routes/uploadQuestion'));
 app.use('/', require('./src/routes/getQuestions'));
+app.use('/', require('./src/routes/getUserInfo'));
 
 app.listen(process.env.PORT, () => {
   console.log('Backend started.');
