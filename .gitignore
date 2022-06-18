@@ -25,7 +25,5 @@ yarn-error.log*
 # test files
 public/test-images
 
-serviceAccount.json
 tests/
-auth/
-.env
+
