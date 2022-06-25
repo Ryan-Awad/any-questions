@@ -46,7 +46,7 @@ class Login extends Component {
           <Form.Label>Password</Form.Label>
           <Form.Control as="input" type="password" name="password" onChange={this.handlePassChange}/><br></br>
 
-          <Button type="button" onClick={this.signIn}>Sing In →</Button>
+          <Button type="button" onClick={this.signIn}>Sign In →</Button>
         </Form.Group>
       </Form>
     );

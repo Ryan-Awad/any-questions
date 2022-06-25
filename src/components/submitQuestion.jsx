@@ -1,41 +1,66 @@
 import React, { Component } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
+// MAKE SURE TO DEAL WITH XSS VULNS (i DONT recommend blocking > and < because it would be used for math related questions)
+
 class SubmitQuestion extends Component {
-  handleSubmit = (event) => {
-    event.preventDefault();
-    const title = event.target.title.value;
-    const body = event.target.body.value;
-    const imageURL = event.target.imageURL.value;
+  state = {
+    typedTitle: null,
+    typedBody: null,
+    typedImageURL: null
+  }
 
-    console.log(title);
-    console.log(body);
-    console.log(imageURL);
+  getCookie = (name) => { // https://stackoverflow.com/a/21125098/10273599
+    var match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    if (match) return match[2];
+  }
 
-    /*fetch(process.env.BACKEND_URL + 'upload-question', {
+  handleTitleChange = (e) => this.state.typedTitle = e.target.value;
+  handleBodyChange = (e) => this.state.typedBody = e.target.value;
+  handleImgChange = (e) => this.state.typedImageURL = e.target.value;
+
+  submitQuestion = () => {
+    const {typedTitle, typedBody, typedImageURL} = this.state;
+    const jwt = this.getCookie('token');
+    fetch('https://any-questions-backend.herokuapp.com/upload-question', {
       method: 'POST',
-      body: {
-
+      body: JSON.stringify({
+        title: typedTitle,
+        body: typedBody,
+        imageURL: typedImageURL
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${jwt}`
       }
-    }).then(data => {
-      console.log(data);
-    })*/
+    })
+    .then(res => {
+      // change the display text to be on an element instead of just an alert
+      if (res.status === 401) {
+        alert('It appears you are not signed in. Sign into your account to upload questions.');
+      } else {
+        res.json().then(data => {
+          alert(data.success);
+          window.location.href = '/'; // redirect user to home page
+        });
+      }
+    })
   }
 
   render() { 
     return (
       <React.Fragment>
-        <Form onSubmit={this.handleSubmit}>
+        <Form>
           <Form.Group>
             <Form.Label>Title</Form.Label>
-            <Form.Control as="input" name="title"/><br></br>
+            <Form.Control as="input" name="title" onChange={this.handleTitleChange}/><br></br>
 
             <Form.Label>Body</Form.Label>
-            <Form.Control as="textarea" rows={7} name="body"/><br></br>
+            <Form.Control as="textarea" rows={7} name="body" onChange={this.handleBodyChange}/><br></br>
 
             <Form.Label>Image URL</Form.Label>
-            <Form.Control as="input" name="imageURL"/><br></br>
-            <Button type="submit">Submit question</Button>
+            <Form.Control as="input" name="imageURL" onChange={this.handleImgChange}/><br></br>
+            <Button onClick={this.submitQuestion}>Submit question</Button>
           </Form.Group>
         </Form>
       </React.Fragment>

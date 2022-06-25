@@ -30,21 +30,20 @@ class Question extends Component {
         }
       }
     }
-    sections.push(currentStr);
+    sections.push(currentStr.split('\n').map(str => str !== '' ? <p>{str}</p> : <br></br>)); // convert "\n" to a line break
 
     return sections;
   }
 
   render() { 
-    const {id, title, answered} = this.props.data;
-    const width = this.props.data.width + 'em';
+    const {id, title, answered, imgURL} = this.props.data;
     const body = this.processMath(this.props.data.body);
     const {handleAnswer} = this.props;
 
     return (
       <div style={{padding: 10}}>
-        <Card style={{width: width, overflow: 'auto'}}>
-          <Card.Img variant='top' src='./test-images/q.png'/> {/* ADD A IMG TO THE PROPS FOR THIS COMPONENT */}
+        <Card style={{width: "20em", overflow: 'auto'}}>
+          <Card.Img variant='top' src={imgURL}/>
           <Card.Body>
             <h5>
               <Badge 
