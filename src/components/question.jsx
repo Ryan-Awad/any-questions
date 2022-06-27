@@ -43,7 +43,7 @@ class Question extends Component {
     return (
       <div style={{padding: 10}}>
         <Card style={{width: "20em", overflow: 'auto'}}>
-          <Card.Img variant='top' src={imgURL}/>
+          {imgURL ? <Card.Img variant='top' src={imgURL}/> : null}
           <Card.Body>
             <h5>
               <Badge 

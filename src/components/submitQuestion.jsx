@@ -58,7 +58,7 @@ class SubmitQuestion extends Component {
             <Form.Label>Body</Form.Label>
             <Form.Control as="textarea" rows={7} name="body" onChange={this.handleBodyChange}/><br></br>
 
-            <Form.Label>Image URL</Form.Label>
+            <Form.Label>Image URL (optional)</Form.Label>
             <Form.Control as="input" name="imageURL" onChange={this.handleImgChange}/><br></br>
             <Button onClick={this.submitQuestion}>Submit question</Button>
           </Form.Group>
