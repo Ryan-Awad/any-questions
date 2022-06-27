@@ -1,10 +1,9 @@
 const express = require('express');
-const jwt = require('jsonwebtoken');
 const {writeData} = require('../firebase');
 const router = express.Router();
 
 router.post('/upload-question', (req, res) => {
-  const {title, body, imageURL} = req.body;
+  const {title, body, imageURL, flairs} = req.body;
   const userID = req.auth.id;
 
   const data = {
@@ -12,6 +11,7 @@ router.post('/upload-question', (req, res) => {
     title: title,
     body: body,
     imgURL: imageURL,
+    flairs: flairs,
     answered: false
   };
 

@@ -28,6 +28,9 @@ app.use('/', require('./src/routes/login'));
 app.use('/', require('./src/routes/uploadQuestion'));
 app.use('/', require('./src/routes/getQuestions'));
 app.use('/', require('./src/routes/getUserInfo'));
+app.use('/', require('./src/routes/answerQuestion'));
+app.use('/', require('./src/routes/deleteQuestion'));
+app.use('/', require('./src/routes/editFlairs'));
 
 app.listen(process.env.PORT, () => {
   console.log('Backend started.');

@@ -38,7 +38,7 @@ router.post('/login', (req, res) => {
       if (token) {
         res.status(200).json({success: token});
       } else {
-        res.status(401).send({error: 'Invalid credentials.'});
+        res.status(401).json({error: 'Invalid credentials.'});
       }
     });
   });
