@@ -11,7 +11,7 @@ router.post('/upload-question', (req, res) => {
     title: title,
     body: body,
     imgURL: imageURL,
-    flairs: flairs,
+    flairs: flairs ? flairs : [],
     answered: false
   };
 
