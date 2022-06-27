@@ -7,8 +7,8 @@ class Login extends Component {
     typedPassword: null
   }
 
-  handleUserChange = (e) => this.state.typedUsername = e.target.value;
-  handlePassChange = (e) => this.state.typedPassword = e.target.value;
+  handleUserChange = (e) => this.setState({typedUsername: e.target.value});
+  handlePassChange = (e) => this.setState({typedPassword: e.target.value});
 
   signIn = () => {
     const {typedUsername, typedPassword} = this.state;

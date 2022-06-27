@@ -15,9 +15,9 @@ class SubmitQuestion extends Component {
     if (match) return match[2];
   }
 
-  handleTitleChange = (e) => this.state.typedTitle = e.target.value;
-  handleBodyChange = (e) => this.state.typedBody = e.target.value;
-  handleImgChange = (e) => this.state.typedImageURL = e.target.value;
+  handleTitleChange = (e) => this.setState({typedTitle: e.target.value});
+  handleBodyChange = (e) => this.setState({typedBody: e.target.value});
+  handleImgChange = (e) => this.setState({typedImageURL: e.target.value});
 
   submitQuestion = () => {
     const {typedTitle, typedBody, typedImageURL} = this.state;
