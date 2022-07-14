@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import signIn from '../helpers/signIn';
+import signUp from '../helpers/signUp';
 
-class Login extends Component {
+class Register extends Component {
   state = {
     typedUsername: null,
     typedPassword: null
@@ -22,12 +22,12 @@ class Login extends Component {
           <Form.Control as="input" type="password" name="password" onChange={this.handlePassChange}/><br></br>
 
           <Button type="button" onClick={() => {
-            signIn(this.state.typedUsername, this.state.typedPassword)}
-          }>Sign In →</Button>
+            signUp(this.state.typedUsername, this.state.typedPassword)}
+          }>Sign Up!</Button>
         </Form.Group>
       </Form>
     );
   }
 }
  
-export default Login;
+export default Register;

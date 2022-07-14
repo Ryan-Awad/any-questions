@@ -1,8 +1,14 @@
 import React, {Component} from 'react';
 import {InlineMath, BlockMath} from 'react-katex';
-import {Card, Button, Badge} from 'react-bootstrap';
+import {Card, Button, Badge, Form} from 'react-bootstrap';
+import getCookie from '../helpers/getCookie';
+import '../styles/index.css';
 
 class Question extends Component {
+  state = {
+    typedAnswer: null
+  }
+
   processMath = (question) => { // algorithm for rendering LaTeX math
     // math expressions start with '@'
     // INLINE math expressions END with '&'
@@ -35,10 +41,12 @@ class Question extends Component {
     return sections;
   }
 
+  handleAnswerChange = (e) => this.setState({typedAnswer: e.target.value});
+
   render() { 
-    const {id, title, answered, imgURL} = this.props.data;
+    const {id, title, answered, answer, imgURL, flairs} = this.props.data;
     const body = this.processMath(this.props.data.body);
-    const {handleAnswer} = this.props;
+    const {handleAnswer, handleDelete} = this.props;
 
     return (
       <div style={{padding: 10}}>
@@ -53,10 +61,31 @@ class Question extends Component {
               >{answered ? 'Answered' : 'Unanswered'}</Badge>
             </h5>
 
+            {flairs.map(f => <Badge className={'flair'} pill bg={'custom'}>{f}</Badge>)}
+
             <Card.Title style={{paddingTop: 10}}>{title}</Card.Title>
             <Card.Text>{body}</Card.Text>
 
-            {!answered ? <Button variant='outline-primary' onClick={() => handleAnswer(id)}>Answered</Button> : null}
+            <Form>
+              <Form.Control 
+                as={'textarea'} 
+                rows={5}
+                name='answer'
+                disabled={answered} 
+                value={answered ? answer : undefined} 
+                onChange={this.handleAnswerChange}
+              ></Form.Control>
+              <br></br>
+
+              <Button 
+                variant={!answered ? 'outline-primary' : 'secondary'} 
+                onClick={() => handleAnswer(getCookie('token'), id, !answered, this.state.typedAnswer)}
+              >
+                {answered ? 'Undo Answer' : 'Answer'}
+              </Button>
+
+              <Button variant={'outline-danger'} style={{float: 'right'}} onClick={() => {handleDelete(getCookie('token'), id)}}>Delete</Button>
+            </Form>
           </Card.Body>
         </Card>
       </div>
