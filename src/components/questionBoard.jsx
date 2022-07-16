@@ -3,6 +3,7 @@ import Question from './question';
 import getQuestions from '../helpers/getQuestions';
 import answerQuestion from '../helpers/answerQuestion';
 import deleteQuestion from '../helpers/deleteQuestion';
+import editFlair from '../helpers/editFlair';
 import getCookie from '../helpers/getCookie';
 
 /*
@@ -25,7 +26,17 @@ class QuestionBoard extends Component {
   render() { 
     return ( // GETTING ERROR THAT EACH Question COMPONENT NEEDS UNIQUE KEY, YET I AM DOING THAT. FIX
       <React.Fragment>
-        {this.state.questions.map(q => <Question key={q.id} data={q} handleAnswer={answerQuestion} handleDelete={deleteQuestion}/>)}
+        {this.state.questions.map(q => {
+          return (
+            <Question 
+              key={q.id} 
+              data={q} 
+              handleAnswer={answerQuestion} 
+              handleDelete={deleteQuestion}
+              handleEditFlair={editFlair}
+            />
+          );
+        })}
       </React.Fragment>
     );
   }

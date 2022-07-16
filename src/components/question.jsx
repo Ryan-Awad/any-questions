@@ -1,12 +1,15 @@
 import React, {Component} from 'react';
 import {InlineMath, BlockMath} from 'react-katex';
-import {Card, Button, Badge, Form} from 'react-bootstrap';
+import {Card, Button, Badge, Form, Dropdown} from 'react-bootstrap';
 import getCookie from '../helpers/getCookie';
 import '../styles/index.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 class Question extends Component {
   state = {
-    typedAnswer: null
+    flairs: [],
+    typedAnswer: null,
+    typedNewFlair: null
   }
 
   processMath = (question) => { // algorithm for rendering LaTeX math
@@ -42,11 +45,17 @@ class Question extends Component {
   }
 
   handleAnswerChange = (e) => this.setState({typedAnswer: e.target.value});
+  handleNewFlairChange = (e) => this.setState({typedNewFlair: e.target.value});
+
+  componentDidMount() {
+    const {flairs} = this.props.data;
+    this.setState({flairs: flairs});
+  }
 
   render() { 
     const {id, title, answered, answer, imgURL, flairs} = this.props.data;
     const body = this.processMath(this.props.data.body);
-    const {handleAnswer, handleDelete} = this.props;
+    const {handleAnswer, handleDelete, handleEditFlair} = this.props;
 
     return (
       <div style={{padding: 10}}>
@@ -61,7 +70,40 @@ class Question extends Component {
               >{answered ? 'Answered' : 'Unanswered'}</Badge>
             </h5>
 
-            {flairs.map(f => <Badge className={'flair'} pill bg={'custom'}>{f}</Badge>)}
+            {this.state.flairs.map(f => <Badge 
+              className={'flair'} 
+              pill 
+              bg={'custom'} 
+            >
+              <span 
+                style={{paddingRight: 5}}
+                onMouseUp={() => {
+                  flairs.splice(flairs.indexOf(f), 1);
+                  this.setState({flairs: flairs});
+                  handleEditFlair(getCookie('token'), id, flairs);
+                }}
+              >
+                <i className="bi bi-x"></i>
+              </span>
+              {f}
+            </Badge>)}
+            
+            <Dropdown style={{paddingTop: 5}}>
+              <Dropdown.Toggle variant='secondary' size='sm'>
+                <i className="bi bi-plus"></i>
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu style={{padding: 5}}>
+                <input style={{padding: 2}} placeholder='Enter new flair' onChange={this.handleNewFlairChange}/>
+                <Button variant='secondary' size='sm' onClick={() => {
+                  flairs.push(this.state.typedNewFlair);
+                  this.setState({flairs: flairs});
+                  handleEditFlair(getCookie('token'), id, flairs);
+                }}>
+                  <i className="bi bi-tags-fill" style={{paddingRight: 4}}></i>Add
+                </Button>
+              </Dropdown.Menu>
+            </Dropdown>
 
             <Card.Title style={{paddingTop: 10}}>{title}</Card.Title>
             <Card.Text>{body}</Card.Text>

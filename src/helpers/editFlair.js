@@ -1,6 +1,6 @@
 // allFlairs = allFlairs.splice(allFlairs.indexOf(flair), 1); // remove the selected flair from all the flairs
 
-const editFlair = (jwt, id, flairs) => {
+const editFlair = (jwt, questionID, flairs) => {
   fetch('https://any-questions-backend.herokuapp.com/edit-flairs', {
     method: 'POST',
     headers: {
@@ -8,15 +8,13 @@ const editFlair = (jwt, id, flairs) => {
       'Authorization': `Bearer ${jwt}`
     },
     body: JSON.stringify({
-      questionID: id,
+      questionID: questionID,
       newFlairs: flairs
     })
   })
   .then(res => {
     res.json().then(data => {
-      if (res.status === 200) { // add the jwt to the user's cookies
-        window.location.reload(); // refreshes the page
-      } else {
+      if (res.status !== 200) { 
         alert(data.error);
       }
     });

@@ -14,7 +14,7 @@ const deleteQuestion = (jwt, id) => {
     })
     .then(res => {
       res.json().then(data => {
-        if (res.status === 200) { // add the jwt to the user's cookies
+        if (res.status === 200) {
           window.location.reload(); // refreshes the page
         } else {
           alert(data.error);
