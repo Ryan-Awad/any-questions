@@ -1,46 +1,23 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const {readData} = require('../firebase');
+const {login} = require('../firebase');
 const router = express.Router();
 
-function checkCredential(users, index, username, password, callback) {
-  let storedUser = users[index].username;
-  let storedPassHash = users[index].password;
-  let storedID = users[index].id;
-
-  if (username === storedUser) {
-    bcrypt.compare(password, storedPassHash, (err, valid) => { // use 'err' to check for potential errors
-      if (valid) {
-        const token = jwt.sign({username: storedUser, id: storedID}, process.env.JWT_SECRET, {algorithm: 'HS256'});
-        callback(token);
-      } else {
-        if (index === users.length-1) { // no more users in the db to check
-          callback(null);
-        } else { // recurse to the next user
-          checkCredential(users, index+1, username, password, callback);
-        }
-      }
-    });
-  }
-  else if ((index+1) < users.length) {
-    checkCredential(users, index+1, username, password, callback); // recurse to the next user
-  } else { // no more users in the db to check
-    callback(null);
-  }
-}
-
 router.post('/login', (req, res) => {
-  const {username, password} = req.body;
+  const {email, password} = req.body;
+  const firebaseErrors = {
+    'auth/wrong-password': 'Invalid email or password.',
+    'auth/user-not-found': 'Invalid email or password.',
+    'auth/invalid-email': 'Please enter a valid E-Mail.',
+    'auth/internal-error': 'Please make sure to fill out all fields'
+  }
 
-  readData('users', data => {
-    checkCredential(data, 0, username, password, (token) => {
-      if (token) {
-        res.status(200).json({success: token});
-      } else {
-        res.status(401).json({error: 'Invalid credentials.'});
-      }
-    });
+  login(email, password, auth => {
+    if (auth.name === 'FirebaseError') { // if there was an error when creating the user
+      res.status(400).json({error: firebaseErrors[auth.code] ? firebaseErrors[auth.code] : 'An error has occured.'});
+    } else { // if there is no errors, 'auth' is a JWT 
+      res.status(200).json({success: auth});
+    }
   });
 })
 

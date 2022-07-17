@@ -4,7 +4,7 @@ const router = express.Router();
 
 router.post('/upload-question', (req, res) => {
   const {title, body, imageURL, flairs} = req.body;
-  const userID = req.auth.id;
+  const userID = req.auth.user_id;
 
   const data = {
     userID: userID,

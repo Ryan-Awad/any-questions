@@ -3,7 +3,7 @@ const {editData} = require('../firebase');
 const router = express.Router();
 
 router.post('/answer-question', (req, res) => {
-  const userID = req.auth.id;
+  const userID = req.auth.user_id;
   const {questionID, answered} = req.body; // 'answered' could be true or false (you could mark something answered as unanswered again)
   var {answer} = req.body;
   if (!answered) { 

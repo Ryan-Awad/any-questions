@@ -1,36 +1,20 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const {readData, writeData} = require('../firebase');
+const {createUserAccount} = require('../firebase');
 const router = express.Router();
 
 router.post('/register', (req, res) => {
-  const {username, password} = req.body;
+  const {username, email, password} = req.body;
+  const firebaseErrors = {
+    'auth/email-already-in-use': 'This e-mail is already in use.',
+    'auth/weak-password': 'Your password must be at least 6 characters long.'
+  }
 
-  readData('users', data => {
-    let userExists = false;
-    for (let i = 0; i < data.length; i++) {
-      if (username === data[i].username) {
-        userExists = true;
-        break;
-      }
-    }
-
-    if (!userExists) {
-      const saltRounds = 10; // 2^10 iterations
-      bcrypt.hash(password, saltRounds, (err, passwordHash) => {
-        const data = {
-          username: username,
-          password: passwordHash
-        };
-
-        writeData('users', data, userID => {
-          const token = jwt.sign({username: username, id: userID}, process.env.JWT_SECRET, {algorithm: 'HS256'});
-          res.status(200).json({success: token});
-        });
-      });
-    } else {
-      res.status(400).json({error: 'Username is already in use.'});
+  createUserAccount(username, email, password, auth => {
+    if (auth.name === 'FirebaseError') { // if there was an error when creating the user
+      res.status(400).json({error: firebaseErrors[auth.code] ? firebaseErrors[auth.code] : 'An error has occured.'})
+    } else { // if there is no errors, 'auth' is a JWT 
+      res.status(200).json({success: auth});
     }
   });
 });

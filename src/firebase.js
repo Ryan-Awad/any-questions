@@ -1,11 +1,17 @@
-const firebase = require('firebase-admin');
+const firebaseAdmin = require('firebase-admin');
+const firebase = require('firebase/app');
+const {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile} = require('firebase/auth');
 const serviceAccount = require('../auth/serviceAccount.json');
+const firebaseConfig = require('../auth/firebaseConfig.json');
 
-firebase.initializeApp({
-  credential: firebase.credential.cert(serviceAccount)
+firebaseAdmin.initializeApp({ // initializing the app for the firebase admin SDK
+  credential: firebaseAdmin.credential.cert(serviceAccount)
 });
 
-const db = firebase.firestore();
+firebase.initializeApp(firebaseConfig); // initializing the app for the regular firebase SDK
+
+const db = firebaseAdmin.firestore();
+const auth = getAuth();
 
 module.exports.getID = (collection, callback) => {
   const idLength = 16;
@@ -58,6 +64,31 @@ module.exports.readData = (collection, callback) => {
 module.exports.verifyUser = (collection, dataID, idKeyName, userID, callback) => { // see comment above on the meaning of idKeyName
   db.collection(collection).doc(dataID).get().then(data => {
     callback(data.data()[idKeyName] === userID);
+  });
+}
+
+module.exports.createUserAccount = (username, email, password, callback) => { // in the future, we should add more things like profile pictures, etc
+  createUserWithEmailAndPassword(auth, email, password)
+  .then(userInfo => {
+    let {user} = userInfo;
+    updateProfile(user, {
+      displayName: username
+    })
+    .then(() => user.getIdToken(true).then(token => callback(token)))
+    .catch(error => callback(error));
+  })
+  .catch(error => {
+    callback(error);
+  })
+}
+
+module.exports.login = (email, password, callback) => {
+  signInWithEmailAndPassword(auth, email, password)
+  .then(userInfo => {
+    userInfo.user.getIdToken(true).then(token => callback(token));
+  })
+  .catch(error => {
+    callback(error);
   });
 }
 
