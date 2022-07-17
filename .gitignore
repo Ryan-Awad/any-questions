@@ -27,4 +27,3 @@ public/test-images
 auth/
 tests/
 auth-test.js
-.env
