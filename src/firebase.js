@@ -1,6 +1,6 @@
 const firebaseAdmin = require('firebase-admin');
 const firebase = require('firebase/app');
-const {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile} = require('firebase/auth');
+const {getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, updateProfile} = require('firebase/auth');
 const serviceAccount = require('../auth/serviceAccount.json');
 const firebaseConfig = require('../auth/firebaseConfig.json');
 
@@ -74,12 +74,14 @@ module.exports.createUserAccount = (username, email, password, callback) => { //
     updateProfile(user, {
       displayName: username
     })
-    .then(() => user.getIdToken(true).then(token => callback(token)))
+    .then(() => user.getIdToken(true).then(token => {
+      sendEmailVerification(user)
+      .then(() => callback(token))
+      .catch(error => callback(error));
+    }))
     .catch(error => callback(error));
   })
-  .catch(error => {
-    callback(error);
-  })
+  .catch(error => callback(error));
 }
 
 module.exports.login = (email, password, callback) => {
