@@ -24,6 +24,7 @@ yarn-error.log*
 
 # test files
 public/test-images
-auth/
+
 tests/
 auth-test.js
+auth

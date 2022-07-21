@@ -10,8 +10,6 @@ app.use(validateJWT);
 
 // ROUTES
 app.use('/', require('./src/routes/ping'));
-app.use('/', require('./src/routes/register'));
-app.use('/', require('./src/routes/login'));
 app.use('/', require('./src/routes/uploadQuestion'));
 app.use('/', require('./src/routes/getQuestions'));
 app.use('/', require('./src/routes/answerQuestion'));
