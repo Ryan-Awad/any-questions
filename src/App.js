@@ -4,6 +4,7 @@ import SubmitQuestion from './components/submitQuestion';
 import Login from './components/login';
 import Register from './components/register';
 import VerifyEmail from './components/verifyEmail';
+import NavBar from './components/navbar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import isEmailVerified from './helpers/isEmailVerified';
 import isSignedIn from './helpers/isSignedIn';
@@ -33,13 +34,16 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<QuestionBoard />}/>
-          <Route path='ask-question' element={<SubmitQuestion />}/>
-          <Route path='login' element={<Login />}/>
-          <Route path='register' element={<Register />}/>
-          <Route path='verify-email' element={<VerifyEmail />}/>
-        </Routes>
+        <NavBar/>
+        <div style={{padding: 25}}>
+          <Routes>
+            <Route path='/' element={<QuestionBoard />}/>
+            <Route path='ask-question' element={<SubmitQuestion />}/>
+            <Route path='login' element={<Login />}/>
+            <Route path='register' element={<Register />}/>
+            <Route path='verify-email' element={<VerifyEmail />}/>
+          </Routes>
+        </div>
       </BrowserRouter>
     );
   }
