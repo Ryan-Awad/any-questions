@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {InlineMath, BlockMath} from 'react-katex';
 import {Card, Button, Badge, Form, Dropdown} from 'react-bootstrap';
-import getCookie from '../helpers/getCookie';
+import getJWT from '../helpers/getJWT';
 import '../styles/index.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
@@ -80,7 +80,7 @@ class Question extends Component {
                 onMouseUp={() => {
                   flairs.splice(flairs.indexOf(f), 1);
                   this.setState({flairs: flairs});
-                  handleEditFlair(getCookie('token'), id, flairs);
+                  getJWT(jwt => handleEditFlair(jwt, id, flairs));
                 }}
               >
                 <i className="bi bi-x"></i>
@@ -96,9 +96,9 @@ class Question extends Component {
               <Dropdown.Menu style={{padding: 5}}>
                 <input style={{padding: 2}} placeholder='Enter new flair' onChange={this.handleNewFlairChange}/>
                 <Button variant='secondary' size='sm' onClick={() => {
-                  flairs.push(this.state.typedNewFlair);
+                  flairs.push(this.state.typedNewFlair.toLowerCase());
                   this.setState({flairs: flairs});
-                  handleEditFlair(getCookie('token'), id, flairs);
+                  getJWT(jwt => handleEditFlair(jwt, id, flairs));
                 }}>
                   <i className="bi bi-tags-fill" style={{paddingRight: 4}}></i>Add
                 </Button>
@@ -121,12 +121,12 @@ class Question extends Component {
 
               <Button 
                 variant={!answered ? 'outline-primary' : 'secondary'} 
-                onClick={() => handleAnswer(getCookie('token'), id, !answered, this.state.typedAnswer)}
+                onClick={() => getJWT(jwt => handleAnswer(jwt, id, !answered, this.state.typedAnswer))}
               >
                 {answered ? 'Undo Answer' : 'Answer'}
               </Button>
 
-              <Button variant={'outline-danger'} style={{float: 'right'}} onClick={() => {handleDelete(getCookie('token'), id)}}>Delete</Button>
+              <Button variant={'outline-danger'} style={{float: 'right'}} onClick={() => getJWT(jwt => handleDelete(jwt, id))}>Delete</Button>
             </Form>
           </Card.Body>
         </Card>

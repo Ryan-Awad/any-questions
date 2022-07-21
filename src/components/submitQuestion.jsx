@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import submitQuestion from '../helpers/submitQuestion';
-import getCookie from '../helpers/getCookie';
+import getJWT from '../helpers/getJWT';
 
 // MAKE SURE TO DEAL WITH XSS VULNS (i DONT recommend blocking > and < because it would be used for math related questions)
 
@@ -30,7 +30,7 @@ class SubmitQuestion extends Component {
             <Form.Label>Image URL (optional)</Form.Label>
             <Form.Control as="input" name="imageURL" onChange={this.handleImgChange}/><br></br>
             <Button onClick={() => { 
-              submitQuestion(getCookie('token'), this.state.typedTitle, this.state.typedBody, this.state.typedImageURL) 
+              getJWT(jwt => submitQuestion(jwt, this.state.typedTitle, this.state.typedBody, this.state.typedImageURL)) 
             }}>Submit question</Button>
           </Form.Group>
         </Form>

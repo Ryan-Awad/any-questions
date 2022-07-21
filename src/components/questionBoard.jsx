@@ -4,7 +4,7 @@ import getQuestions from '../helpers/getQuestions';
 import answerQuestion from '../helpers/answerQuestion';
 import deleteQuestion from '../helpers/deleteQuestion';
 import editFlair from '../helpers/editFlair';
-import getCookie from '../helpers/getCookie';
+import getJWT from '../helpers/getJWT';
 
 /*
 {id: 1, title: 'How can I find the derivative of a polynomial?', answered: false, width: 20, body: "If I have @f(x) = 4x^4 - 7x^3 + 2x^2 - 9x - 1# How can I find @\\frac{d}{dx} f(x)&"},
@@ -18,8 +18,10 @@ class QuestionBoard extends Component {
   };
 
   componentDidMount() {
-    getQuestions(getCookie('token'), questions => {
-      this.setState({questions: questions});
+    getJWT(jwt => {
+      getQuestions(jwt, questions => {
+        this.setState({questions: questions});
+      });
     });
   }
 
