@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import signIn from '../helpers/signIn';
+import '../styles/index.css';
 
 class Login extends Component {
   state = {
@@ -13,7 +14,7 @@ class Login extends Component {
 
   render() { 
     return (
-      <Form>
+      <Form className='form'>
         <Form.Group>
           <Form.Label>Email</Form.Label>
           <Form.Control as="input" type="email" name="email" onChange={this.handleEmailChange} placeholder="johndoe@example.com"/><br></br>
@@ -25,6 +26,7 @@ class Login extends Component {
             signIn(this.state.typedEmail, this.state.typedPassword)}
           }>Sign In →</Button>
         </Form.Group>
+        <small style={{float: 'right'}}>Don't have an account? <a href='/register'>Sign up!</a></small>
       </Form>
     );
   }

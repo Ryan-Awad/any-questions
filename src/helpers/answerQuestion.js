@@ -19,9 +19,7 @@ const answerQuestion = (jwt, id, answered, answer=null) => {
     })
     .then(res => {
       res.json().then(data => {
-        if (res.status === 200) {
-          window.location.reload(); // refreshes the page
-        } else {
+        if (res.status !== 200) { 
           alert(data.error);
         }
       });

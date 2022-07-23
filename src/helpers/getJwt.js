@@ -1,6 +1,6 @@
 import {getAuth} from 'firebase/auth';
 
-const getJWT = (callback) => { 
+const getJwt = (callback) => { 
   getAuth().onAuthStateChanged(user => {
     if (user) {
       user.getIdToken(/*forceRefresh*/ true)
@@ -11,4 +11,4 @@ const getJWT = (callback) => {
   })
 }
 
-export default getJWT;
+export default getJwt;

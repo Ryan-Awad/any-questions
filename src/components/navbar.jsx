@@ -1,7 +1,20 @@
 import React, { Component } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
+import logout from '../helpers/logout';
+import isSignedIn from '../helpers/isSignedIn';
+import getUserInfo from '../helpers/getUserInfo';
 
 class NavBar extends Component {
+  state = {
+    signedIn: false,
+    username: null
+  }
+
+  componentDidMount() {
+    isSignedIn(signedIn => this.setState({signedIn: signedIn}));
+    getUserInfo(user => this.setState({username: user.displayName}));
+  }
+
   render() { 
     return (
       <Navbar bg="dark" variant="dark">
@@ -20,6 +33,8 @@ class NavBar extends Component {
             <Nav.Link href="/ask-question">Ask Question</Nav.Link>
             <Nav.Link href="#">About</Nav.Link>
             <Nav.Link href="#">Pricing</Nav.Link>
+            {this.state.signedIn ? <Nav.Link onClick={logout}>Logout</Nav.Link> : null}
+            {this.state.username ? <Nav.Link>Signed in as {this.state.username}</Nav.Link> : null}
         </Nav>
       </Navbar>
     );
