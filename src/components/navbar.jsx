@@ -31,8 +31,6 @@ class NavBar extends Component {
 
         <Nav className="me-auto">
             <Nav.Link href="/ask-question">Ask Question</Nav.Link>
-            <Nav.Link href="#">About</Nav.Link>
-            <Nav.Link href="#">Pricing</Nav.Link>
             {this.state.signedIn ? <Nav.Link onClick={logout}>Logout</Nav.Link> : null}
             {this.state.username ? <Nav.Link>Signed in as {this.state.username}</Nav.Link> : null}
         </Nav>

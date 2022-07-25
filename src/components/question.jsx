@@ -59,7 +59,7 @@ class Question extends Component {
 
     return (
       <div style={{padding: 10}}>
-        <Card style={{width: "20em", overflow: 'auto'}}>
+        <Card className='question' style={{width: "20em", overflow: 'auto'}}>
           {imgURL ? <Card.Img variant='top' src={imgURL}/> : null}
           <Card.Body>
             <h5>
@@ -111,6 +111,7 @@ class Question extends Component {
             <Form>
               <Form.Control 
                 as={'textarea'} 
+                placeholder={'Write the answer here'}
                 rows={5}
                 name='answer'
                 disabled={answered} 
@@ -123,10 +124,12 @@ class Question extends Component {
                 variant={!answered ? 'outline-primary' : 'secondary'} 
                 onClick={() => getJwt(jwt => handleAnswer(jwt, id, !answered, this.state.typedAnswer))}
               >
-                {answered ? 'Undo Answer' : 'Answer'}
+                {answered ? <i class="bi bi-arrow-counterclockwise"></i> : <i class="bi bi-chat-right-text-fill"></i>}
               </Button>
 
-              <Button variant={'outline-danger'} style={{float: 'right'}} onClick={() => getJwt(jwt => handleDelete(jwt, id))}>Delete</Button>
+              <Button variant={'outline-danger'} style={{float: 'right'}} onClick={() => getJwt(jwt => handleDelete(jwt, id))}>
+                <i class="bi bi-trash-fill"></i>
+              </Button>
             </Form>
           </Card.Body>
         </Card>

@@ -29,7 +29,7 @@ class Register extends Component {
 
           <Button type="button" onClick={() => {
             signUp(this.state.typedUsername, this.state.typedEmail, this.state.typedPassword)}
-          }>Sign Up!</Button>
+          }><i class="bi bi-person-check-fill"></i> Sign Up!</Button>
         </Form.Group>
         <small style={{float: 'right'}}>Already have an account? <a href='/login'>Sign in.</a></small>
       </Form>

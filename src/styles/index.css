@@ -10,3 +10,21 @@
     box-shadow: 15px 12px 35px rgb(155, 155, 155);
     margin: 0 auto;
 }
+
+.question-form {
+    width: 800px;
+    background-color: rgb(230, 230, 230);
+    padding: 35px;
+    border-radius: 15px;
+    box-shadow: 15px 12px 35px rgb(155, 155, 155);
+    float: left;
+}
+
+.preview {
+    float: left;
+    padding-left: 60px;
+}
+
+.question {
+    box-shadow: 15px 12px 35px rgb(155, 155, 155);
+}

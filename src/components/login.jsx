@@ -24,7 +24,7 @@ class Login extends Component {
 
           <Button type="button" onClick={() => {
             signIn(this.state.typedEmail, this.state.typedPassword)}
-          }>Sign In →</Button>
+          }><i class="bi bi-lock-fill"></i> Sign In</Button>
         </Form.Group>
         <small style={{float: 'right'}}>Don't have an account? <a href='/register'>Sign up!</a></small>
       </Form>
